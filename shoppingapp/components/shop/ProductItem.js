@@ -1,25 +1,49 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Button,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
+} from "react-native";
 import Colors from "../../constants/Colors";
 const ProductItem = (props) => {
-  const { p_Title, p_Price, p_ImageUrl, onViewProductDetails, onAddToCart } =
-    props.product_item;
+  // console.log("ppppppppppppppppppp", props.onViewProductDetails);
+  const { p_Title, p_Price, p_ImageUrl } = props.product_item;
+  const { onViewProductDetails, onAddToCart } = props;
+  let TouchableWrapper = TouchableOpacity;
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableWrapper = TouchableNativeFeedback;
+  }
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: p_ImageUrl }} style={styles.image} />
-      </View>
-      <View style={styles.details}>
-        <Text style={styles.title}>{p_Title}</Text>
-        <Text style={styles.price}> ₹ {p_Price.toFixed(2)}</Text>
-      </View>
-      <View style={styles.action}>
-        <Button
-          color={Colors.primary}
-          title="View Details"
-          onPress={onViewProductDetails}
-        />
-        <Button color={Colors.primary} title="To Cart" onPress={onAddToCart} />
+      <View style={styles.touchable}>
+        <TouchableWrapper onPress={onViewProductDetails} useForegournd>
+          <View>
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: p_ImageUrl }} style={styles.image} />
+            </View>
+            <View style={styles.details}>
+              <Text style={styles.title}>{p_Title}</Text>
+              <Text style={styles.price}> ₹ {p_Price.toFixed(2)}</Text>
+            </View>
+            <View style={styles.action}>
+              <Button
+                color={Colors.primary}
+                title="View Details"
+                onPress={onViewProductDetails}
+              />
+              <Button
+                color={Colors.primary}
+                title="To Cart"
+                onPress={onAddToCart}
+              />
+            </View>
+          </View>
+        </TouchableWrapper>
       </View>
     </View>
   );
@@ -37,6 +61,10 @@ const styles = StyleSheet.create({
     height: 300,
     margin: 10,
     padding: 10,
+  },
+  touchable: {
+    borderRadius: 10,
+    overflow: "hidden",
   },
   imageContainer: {
     width: "100%",

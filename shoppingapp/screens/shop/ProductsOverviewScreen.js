@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, FlatList } from "react-native";
 import { connect } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
+import ProductDetailsScreen from "./ProductsDetailsScreen";
 const ProductsOverviewScreen = (props) => {
-  // console.log("-----------------", props);
+  // console.log("&&&&&&&&&&&&&&&", props);
   const { products_list } = props;
   return (
     <FlatList
@@ -12,7 +13,12 @@ const ProductsOverviewScreen = (props) => {
       renderItem={(products) => (
         <ProductItem
           product_item={products.item}
-          onViewProductDetails={() => {}}
+          onViewProductDetails={() => {
+            props.navigation.navigate("ProductDetails", {
+              selected_p_toShow: products.item,
+              p_Title: products.item.p_Title,
+            });
+          }}
           onAddToCart={() => {}}
         />
       )}
